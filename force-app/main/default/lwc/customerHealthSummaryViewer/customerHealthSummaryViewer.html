@@ -1,0 +1,44 @@
+<template>
+    <div class="ai-summary-container">
+        <div class="slds-p-horizontal_medium slds-p-vertical_small">
+
+            <!-- Refresh button -->
+            <div class="slds-m-bottom_small" style="text-align: left;">
+                <lightning-button 
+                    label="Refresh Customer Health Summary" 
+                    onclick={handleRefresh} 
+                    variant="brand">
+                </lightning-button>
+            </div>
+
+            <!-- Spinner -->
+            <template if:true={loading}>
+                <lightning-spinner 
+                    alternative-text="Loading summary..." 
+                    size="small">
+                </lightning-spinner>
+            </template>
+
+            <!-- Error -->
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-m-top_small">
+                    {error}
+                </div>
+            </template>
+
+            <!-- Summary -->
+            <template if:true={summary}>
+                <div class="slds-text-body_regular" style="white-space: pre-wrap;">
+                    {summary}
+                </div>
+
+                <template if:true={lastRefreshed}>
+                    <div class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+                        <strong>Last refreshed:</strong> {lastRefreshed}
+                    </div>
+                </template>
+            </template>
+
+        </div>
+    </div>
+</template>
