@@ -10,25 +10,24 @@ export default class CustomerHealthSummaryViewer extends LightningElement {
     summary;
     error;
     loading = false;
+
     wiredAccountResult;
-    _summaryTriggered = false;
 
     @wire(getRecord, { recordId: '$recordId', fields: FIELDS })
     wiredAccount(result) {
         this.wiredAccountResult = result;
-        const { data, error } = result;
 
+        const { data, error } = result;
         if (data) {
-            this.summary = data.fields.AI_Customer_Health_Summary__c?.value || '';
+            this.summary = data.fields.AI_Customer_Health_Summary__c?.value;
             this.error = null;
 
-            // ✅ Auto-generate once if blank
             if (!this._summaryTriggered && (!this.summary || this.summary.trim() === '')) {
                 this._summaryTriggered = true;
                 this.handleRefresh();
             }
         } else if (error) {
-            this.error = 'Error loading saved summary.';
+            this.error = 'Error loading Customer Health Summary.';
             this.summary = null;
             console.error(error);
         }
@@ -48,7 +47,7 @@ export default class CustomerHealthSummaryViewer extends LightningElement {
                 this.loading = false;
             })
             .catch(error => {
-                this.error = error?.body?.message || 'Error generating customer health summary.';
+                this.error = error?.body?.message || 'Error generating summary.';
                 console.error('Gemini Apex Error:', error);
                 this.loading = false;
             });
